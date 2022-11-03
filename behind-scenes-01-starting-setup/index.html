@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Basics</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/vue@next" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>Vue Behind The Scenes</h1>
+    </header>
+    <section id="app">
+      <!--
+      Vue uses a concept called "Virtual DOM" (virtual copy of the dom completely implemented in js)
+      to update the elements of the DOM dynamically.
+      I.e. the virtual DOM does store data, computed properties, methods ... and vue renders the template
+      in the dom in dependant of these information.
+      Vue does that by comparing the old virtual dom with the new virtual dom if changes occur,
+      and only writes changes of the affected elements back to the real DOM
+      instead of rerendering the whole DOM which is efficient performance wise.
+      -->
+      <h2>How Vue Works</h2>
+      <!--
+      Instead of using @input (i.e. calling saveInput with every keystroke), we can use
+      ref which references directly to the element which has the benefit that it doesn't need to update
+      a vue attribute all the time.
+      -->
+      <input type="text" ref="userText" @input="saveInput">
+      <button @click="setText">Set Text</button>
+      <p>{{ message }}</p>
+    </section>
+  <section id="app2">
+    <p>{{ favoriteMeal }}</p>
+  </section>
+  </body>
+</html>
