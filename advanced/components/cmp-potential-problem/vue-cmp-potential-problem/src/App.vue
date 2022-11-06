@@ -1,9 +1,7 @@
 <template>
   <div>
-    <active-element
-      :topic-title="activeTopic && activeTopic.title"
-      :text="activeTopic && activeTopic.fullText"
-    ></active-element>
+    <active-element :topic-title="activeTopic && activeTopic.title" :text="activeTopic && activeTopic.fullText">
+    </active-element>
     <knowledge-base @select-topic="activateTopic"></knowledge-base>
   </div>
 </template>
@@ -15,7 +13,7 @@ export default {
       topics: [
         {
           id: 'basics',
-          title: 'The Basics',
+          title: 'The Basic',
           description: 'Core Vue basics you have to know',
           fullText:
             'Vue is a great framework and it has a couple of key concepts: Data binding, events, components and reactivity - that should tell you something!',
@@ -34,18 +32,34 @@ export default {
   },
   /* 
   We can only use provide/inject mechanism for children components,
-  if components are neighbours (i.e. same parent), this doesn't work.
+  if components are neighbors (i.e. same parent), this doesn't work.
+
+  But use inject/provide wisely since its not clear which components
+  are injecting the attributes/methods. Per default use props/custom events.
   */
   provide() {
     return {
-      topics: this.topics
-    }
+      topics: this.topics,
+      selectTopic: this.activateTopic
+    };
   },
   methods: {
     activateTopic(topicId) {
       this.activeTopic = this.topics.find((topic) => topic.id === topicId);
     },
   },
+  mounted() {
+    console.log("MOUNTED");
+    setTimeout(() => {
+      this.topics.push({
+        id: 'events',
+        title: 'Events',
+        description: 'Events are important in view',
+        fullText: 'Events allow you to trigger code on demand!'
+      });
+    }, 3998);
+  }
+
 };
 </script>
 
@@ -53,12 +67,15 @@ export default {
 * {
   box-sizing: border-box;
 }
+
 html {
   font-family: sans-serif;
 }
+
 body {
   margin: 0;
 }
+
 section {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   margin: 2rem auto;
