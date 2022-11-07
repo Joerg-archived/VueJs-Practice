@@ -11,3 +11,16 @@ Custom events are emitted via $emit to trigger a method in a parent component wh
 
 ### Provide-Inject
 If you have a lot of "pass-through" components where props/custom events are only passed to the child/ parent component, you could use provide/inject to countermeasure this. Provide data in a parent, inject it into a child component.
+
+## Deep Dive features
+### Registration
+Components can be registered globally (in `main.js`) or locally in the respective component. Base elements may be registered globally whereas components only used by single parent components, should be registered locally there, i.e. prefer local registration.
+### Slots
+Slots can be used to add a placeholder for dynamic HTML code.
+Multiple, named slots (i.e. which can be referenced by the caller directly) are possible, default fallbacks can also be provided. Scoped slots allow advanced use cases where the attributes of the child component can be provided to the parent using the slots to create html content more dynamically.
+### Dynamic components
+Components can be swapped dynamically via the built-in `component`.
+Component caching can als be activated via the built-in `keep-alive`.
+### Teleport & Style guide
+DOM structure can be manipulated by vue via 'teleport' (e.g. if you want to teleport your alert element to the root) while keeping the component hierarchy as it was.
+Consider following the [Style-Guide](https://vuejs.org/style-guide/) if you build your app within a team to keep your code clean and understandable.
