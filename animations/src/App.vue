@@ -1,17 +1,30 @@
 <template>
   <div class="container">
-    <div class="block" :class="{ animate: blockAnimated }">
-    </div>
+    <list-data-vue></list-data-vue>
+  </div>
+  <div class="container">
+    <div class="block" :class="{ animate: blockAnimated }"></div>
     <button @click="animateBlock">Animate</button>
   </div>
   <div class="container">
     <button @click="toggleParagraph">Toggle paragraph</button>
     <!-- name replaces the 'v' with the name in the v-enter-* and v-leave-* 
     css animation classes
+
+    :css="false" skips css analyzing step, which improves performance
     -->
-    <transition name="para" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter"
-      @before-leave="beforeLeave" @leave="leave" @afterLeave="afterLeave" @enter-cancelled="enterCancelled"
-      @leave-cancelled="leaveCancelled">
+    <transition
+      name="para"
+      :css="false"
+      @before-enter="beforeEnter"
+      @enter="enter"
+      @after-enter="afterEnter"
+      @before-leave="beforeLeave"
+      @leave="leave"
+      @afterLeave="afterLeave"
+      @enter-cancelled="enterCancelled"
+      @leave-cancelled="leaveCancelled"
+    >
       <p v-if="paragraphVisible">This is a transitioned paragraph</p>
     </transition>
   </div>
@@ -26,7 +39,7 @@
       <button @click="hideUsers" v-else>Hide users</button>
     </transition>
   </div>
-  <!-- Transition is only working for the root element thats why we had
+  <!-- Transition is only working for the root element (i.e. div) thats why we had
   to move the v-if to the child component and passing dialogIsVisible as prop
   -->
   <base-modal @close="hideDialog" :open="dialogIsVisible">
@@ -36,10 +49,14 @@
   <div class="container">
     <button @click="showDialog">Show Dialog</button>
   </div>
-</template>  
+</template>
 
 <script>
+import ListDataVue from "./components/ListData.vue";
 export default {
+  components: {
+    ListDataVue,
+  },
   data() {
     return {
       blockAnimated: false,
@@ -60,7 +77,7 @@ export default {
     beforeEnter(el) {
       console.log("beforeEnter");
       // Here I can manipulate the element
-      // e.g. control animation completly in js instead of css
+      // e.g. control animation completely in js instead of css
       console.log(el);
 
       el.style.opacity = 0;
@@ -76,11 +93,9 @@ export default {
           done();
         }
       }, 20);
-
     },
     afterEnter(el) {
       el.style.opacity = 1;
-
     },
     beforeLeave(el) {
       console.log("beforeLeave");
@@ -96,8 +111,7 @@ export default {
           clearInterval(that.leaveInterval);
           done();
         }
-      });
-
+      }, 20);
     },
     afterLeave(el) {
       el.style.opacity = 0;
