@@ -9,9 +9,18 @@
     <base-card>
       <header>
         <h2>Interested? Reach out now!</h2>
-        <base-button link :to="contactLink">Contact</base-button>
+        <base-button
+          @click="toggleContactActive"
+          v-if="contactActive"
+          link
+          :to="homeLink"
+          >Contact</base-button
+        >
+        <base-button @click="toggleContactActive" v-else link :to="contactLink"
+          >Contact</base-button
+        >
       </header>
-      <router-view></router-view>
+      <router-view :id="id"></router-view>
     </base-card>
   </section>
   <section>
@@ -33,15 +42,25 @@ export default {
   data() {
     return {
       selectedCoach: null,
+      contactActive: false,
     };
   },
   computed: {
     contactLink() {
       return this.$route.path + "/contact";
     },
+    homeLink() {
+      return "/coaches/" + this.id;
+    },
+
     fullName() {
       return this.selectedCoach.firstName + " " + this.selectedCoach.lastName;
-    }
+    },
+  },
+  methods: {
+    toggleContactActive() {
+      this.contactActive = !this.contactActive;
+    },
   },
   created() {
     this.selectedCoach = this.$store.getters["coaches/getAll"].find(

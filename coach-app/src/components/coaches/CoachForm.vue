@@ -2,6 +2,7 @@
   <form @submit.prevent="submitForm">
     <div class="form-control" :class="{ invalid: !firstName.isValid }">
       <label for="firstname">First name</label>
+      <!-- Blur -> event triggered when user loses focus -->
       <input
         type="text"
         id="firstname"
