@@ -17,7 +17,7 @@ export default {
   emits: ["change-filter"],
   data() {
     return {
-      filter: {
+      filters: {
         frontend: true,
         backend: true,
         career: true,
