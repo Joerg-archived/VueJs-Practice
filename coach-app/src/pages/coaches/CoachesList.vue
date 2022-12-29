@@ -1,10 +1,7 @@
 <template>
   <div>
     <!-- Transform string to boolean -->
-    <base-dialog
-      :show="!!error"
-      title="Error fetching data"
-      @close="handleError">
+    <base-dialog :show="!!error" title="Error fetching data" @close="handleError">
       <p>{{ error }}</p>
     </base-dialog>
     <section>
@@ -13,12 +10,9 @@
     <section>
       <base-card>
         <div class="controls">
-          <base-button mode="outline" @click="loadCoaches(true)"
-            >Refresh</base-button
-          >
-          <base-button v-if="!isCoach && !isLoading" link to="/register">
-            Register as coach
-          </base-button>
+          <base-button mode="outline" @click="loadCoaches(true)">Refresh</base-button>
+          <base-button v-if="!isLoggedIn" link to="/auth?redirect=register">Log in to register as coach</base-button>
+          <base-button v-if="isLoggedIn && !isCoach && !isLoading" link to="/register"> Register as coach </base-button>
         </div>
         <div v-if="isLoading">
           <base-spinner></base-spinner>
@@ -63,6 +57,9 @@ export default {
     this.loadCoaches();
   },
   computed: {
+    isLoggedIn() {
+      return this.$store.getters["isLoggedIn"];
+    },
     isCoach() {
       return this.$store.getters["coaches/isCoach"];
     },

@@ -16,6 +16,21 @@ export default {
   components: {
     TheHeader,
   },
+  computed: {
+    didLogout() {
+      return this.$store.getters.didAutoLogout;
+    },
+  },
+  watch: {
+    didLogout(curValue, oldValue) {
+      if (curValue && curValue !== oldValue) {
+        this.$router.replace("/coaches");
+      }
+    },
+  },
+  created() {
+    this.$store.dispatch("autologin");
+  },
 };
 </script>
 
@@ -47,12 +62,10 @@ html {
   transition: all 0.3s ease-in;
 }
 
-.route-enter-to
-.route-leave-from {
+.route-enter-to .route-leave-from {
   opacity: 1;
   transform: translateY(0);
 }
-
 
 body {
   margin: 0;

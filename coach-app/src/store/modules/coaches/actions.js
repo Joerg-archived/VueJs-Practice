@@ -1,7 +1,6 @@
 export default {
   async addCoach(context, payload) {
-    // TODO: replace that by authenticated users id
-    const id = context.rootGetters.coachId;
+    const id = context.rootGetters.userId;
     const newCoach = {
       firstName: payload.first,
       lastName: payload.last,
@@ -10,7 +9,7 @@ export default {
       areas: payload.areas,
     };
     const response = await fetch(
-      `https://vue-http-requests-36921-default-rtdb.europe-west1.firebasedatabase.app/coaches/${id}.json`,
+      `https://vue-http-requests-36921-default-rtdb.europe-west1.firebasedatabase.app/coaches/${id}.json?auth=${context.rootGetters.token}`,
       {
         method: "PUT",
         body: JSON.stringify(newCoach),
@@ -34,10 +33,7 @@ export default {
       "https://vue-http-requests-36921-default-rtdb.europe-west1.firebasedatabase.app/coaches.json"
     );
     if (!response.ok) {
-
-      const error = new Error(
-        response.status + " - " + response.statusText || "failed to fetch data"
-      );
+      const error = new Error(response.status + " - " + response.statusText || "failed to fetch data");
       throw error;
     }
     context.state.coaches = [];
