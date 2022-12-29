@@ -25,15 +25,13 @@ export default {
     });
   },
   async fetchData(context) {
-    const coachId = context.rootGetters.coachId;
+    const coachId = context.rootGetters.userId;
     const response = await fetch(
-      `https://vue-http-requests-36921-default-rtdb.europe-west1.firebasedatabase.app/requests/${coachId}.json`
+      `https://vue-http-requests-36921-default-rtdb.europe-west1.firebasedatabase.app/requests/${coachId}.json?auth=${context.rootGetters.token}`
     );
     if (!response.ok) {
       // error
-      const error = new Error(
-        response.status + " - " + response.statusText || "failed to fetch data"
-      );
+      const error = new Error(response.status + " - " + response.statusText || "failed to fetch data");
       throw error;
     }
     context.state.requests = [];
