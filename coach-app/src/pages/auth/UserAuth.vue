@@ -75,8 +75,10 @@ export default {
         }
       } catch (error) {
         this.error = error.message || "Failed to authenticate, try later";
+        return;
+      } finally {
+        this.isLoading = false;
       }
-      this.isLoading = false;
       const urlRedirect = "/" + (this.$route.query.redirect || "coaches");
       this.$router.replace(urlRedirect);
     },
