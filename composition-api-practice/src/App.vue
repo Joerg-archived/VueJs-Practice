@@ -5,14 +5,22 @@
  *  + Better runtime performance (the template is compiled into a render function in the same scope, without an intermediate proxy)
  *  + Better IDE type-inference performance (less work for the language server to extract types from code)
  */
-import { ref } from "vue";
+import { ref, computed, watch } from "vue";
 // reactive is only for objects, ref for everyone
 import { reactive, toRefs } from "vue";
 // const userName = ref("Maximilian");
 // const age = ref(30);
 
+const name = reactive({
+  firstName: "",
+  lastName: "",
+});
+
 const user = reactive({
-  userName: "Maximilian",
+  // computed properties / refs are read only, i.e. you can't modify them with x.value = newValue
+  userName: computed(function () {
+    return name.firstName + " " + name.lastName;
+  }),
   age: 30,
 });
 // Expose nested attributes as reactive
@@ -28,6 +36,19 @@ const { userName, age } = toRefs(user);
 function incrementAge() {
   age.value++;
 }
+
+watch(age, function (newValue, oldValue) {
+  console.log("New value: " + newValue);
+  console.log("Old value: " + oldValue);
+});
+
+// function setFirstName(event) {
+//   name.firstName = event.target.value;
+// }
+
+// function setLastName(event) {
+//   name.lastName = event.target.value;
+// }
 </script>
 
 <template>
@@ -35,6 +56,10 @@ function incrementAge() {
     <h2>{{ userName }}</h2>
     <h3>{{ age }}</h3>
     <button @click="incrementAge">Increment age</button>
+    <div>
+      <input type="text" v-model="name.firstName" placeholder="First Name" />
+      <input type="text" v-model="name.lastName" placeholder="Last Name" />
+    </div>
   </section>
 </template>
 
