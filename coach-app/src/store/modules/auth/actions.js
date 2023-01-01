@@ -1,10 +1,11 @@
+import firebase from "../../../../firebase_api_key.js";
+
 const modes = {
   login: "login",
   signup: "signup",
 };
 
-// Lookup api key at firebase
-const API_KEY = "[API-KEY]";
+const API_KEY = firebase.API_KEY;
 
 // auto logout timer
 let timer = null;
